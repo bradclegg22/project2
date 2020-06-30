@@ -4,7 +4,7 @@ var session = require('express-session');
 var mysql = require('mysql');
 const path = require('path');
 const { Pool } = require("pg");
-const connectionString = process.env.DATABASE_URL || "postgres://dbuser:brad@localhost:5432/projectdb" || "postgres://mbypnxyisxjsjr:537ffdb222789fab6f0f5ac8b418e5cc5f5b44ceb7daa5e5ad888d99a37157a2@ec2-34-233-226-84.compute-1.amazonaws.com:5432/d3c3o3t4k92eos?ssl=true";
+const connectionString = process.env.DATABASE_URL || "postgres://mbypnxyisxjsjr:537ffdb222789fab6f0f5ac8b418e5cc5f5b44ceb7daa5e5ad888d99a37157a2@ec2-34-233-226-84.compute-1.amazonaws.com:5432/d3c3o3t4k92eos?ssl=true" || "postgres://dbuser:brad@localhost:5432/projectdb";
 const pool = new Pool({connectionString: connectionString});
 const PORT = process.env.PORT || 5000;
 const app = express();
