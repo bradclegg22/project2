@@ -1,0 +1,43 @@
+textarea {
+    resize: none;
+}
+
+.body1 {
+    background-color: #ffd80d;
+}
+
+* form {
+    font-size: 19px;
+}
+
+h1 {
+    text-align: center;
+    font-family: Arial;
+    color: #0056fb;
+    
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    margin: 0 auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.container input {
+    margin-bottom: 20px;
+}
+
+.container input[type^="submit"] {
+    height: 40px;
+    background-color: #41a049;
+    position: relative;
+    bottom: 10px;
+    border-radius: 10px;
+}
