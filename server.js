@@ -66,14 +66,13 @@ function addPost(request, response)
 {
     
     const post = request.body.blogposts;
-    const name = request.body.displayname;
     
     if (post && name){
-    pool.query("INSERT INTO blogposts(post, displayname) values($1, $2)", 
-    [post, name]);
+    pool.query("INSERT INTO blogposts(post) values($1)", 
+    [post]);
 }
     
-    const params = {post: post, name: name};
+    const params = {post: post};
     response.render('result', params);
     
 }
