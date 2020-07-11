@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 var session = require('express-session');
-var mysql = require('mysql');
+const ejs = require('ejs');
 const path = require('path');
 const { Pool } = require("pg");
 const connectionString = process.env.DATABASE_URL || "postgres://dbuser:brad@localhost:5432/projectdb";
@@ -16,7 +16,6 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
   app.use(express.static(path.join(__dirname, 'public')));
-  app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'ejs');
   app.get('/', function(request, response) {
     response.sendFile(path.join(__dirname + '/public/static.html'));
@@ -27,6 +26,8 @@ app.use(bodyParser.json());
   app.listen(PORT, function() {
   console.log('Node app is running on port', PORT);
 });
+
+
 
 function create(request, response){
     let user = request.body.username;
@@ -44,12 +45,32 @@ function create(request, response){
 function login(request, response) {
     var username = request.body.username;
 	var password = request.body.password;
-    if (username && password) {
+    var post = [];
+    var posts = [];
+    pool.query("SELECT post FROM blogposts", function (err, result, fields) {
+    if (err) { 
+        throw err;
+    }
+    else {
+         
+     post = result.rows.map(a => a.post);
+
+    
+}
+        callback(request, response, username, password, post);
+   
+});
+}
+
+    function callback(request, response, username, password, post) {
+    if (username && password && post) {
     pool.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password], function(error, results) {
     if (results.rows.length > 0) {
 				request.session.loggedin = true;
 				request.session.username = username;
-				response.render('result');
+                console.log(post);
+                const params = {post: post};
+				response.render('result', params);
 			} else {
                 response.send('Incorrect Username and/or Password!');
 			}			
@@ -59,21 +80,21 @@ function login(request, response) {
 		response.send('Please enter Username and Password!');
 		response.end();
 	}
-};
+}
 
 
 function addPost(request, response)
 {
     
-    const post = request.body.blogposts;
+    const posts = request.body.blogposts;
     
-    if (post && name){
+    if (posts){
     pool.query("INSERT INTO blogposts(post) values($1)", 
-    [post]);
+    [posts]);
 }
     
-    const params = {post: post};
-    response.render('result', params);
-    
+   response.send('Your post as been added you can now go back and refresh the page to view your post');
 }
+
+
 
